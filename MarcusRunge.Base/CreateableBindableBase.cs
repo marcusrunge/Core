@@ -5,44 +5,23 @@ using System.Threading.Tasks;
 namespace MarcusRunge.Base
 {
     /// <summary>
-    /// Provides a contract for components that expose their creation state and a creation notification event.
+    /// Public base type that provides thread-safe creation and one-time async initialization for a singleton-like instance.
     /// </summary>
-    public interface ICreateableAware
-    {
-        public event EventHandler OnCreated;
-
-        /// <summary>
-        /// Occurs when the instance is created.
-        /// </summary>
-        /// <summary>
-        /// Gets a task that represents the asynchronous initialization process of the instance. If the instance is already created, this property may return null.
-        /// </summary>
-        Task? Initialization { get; }
-
-        /// <summary>
-        /// Gets an exception that occurred during the initialization process, if any.
-        /// </summary>
-        Exception? InitializationException { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the instance has been created.
-        /// </summary>
-        public bool IsCreated { get; }
-    }
-
-    // Internal base type that provides thread-safe creation and one-time async initialization for a singleton-like instance.
-    internal abstract class CreatableBase<TInterface, TClass, TBase> : ICreateableAware
-        where TClass : CreatableBase<TInterface, TClass, TBase>, TInterface, new()
+    /// <typeparam name="TInterface">The interface that the class implements.</typeparam>
+    /// <typeparam name="TClass">The concrete class that inherits from this base class.</typeparam>
+    /// <typeparam name="TBase">The base class for the concrete class.</typeparam>
+    public abstract class CreateableBindableBase<TInterface, TClass, TBase> : BindableBase, ICreateableAware
+        where TClass : CreateableBindableBase<TInterface, TClass, TBase>, TInterface, new()
     {
         // Global synchronization for singleton creation and starting the async initialization exactly once.
-        private static readonly object _sync = new object();
+        private static readonly Lock _sync = new();
 
         private static Exception? _initializationException;
         private static Task? _initTask;
         private static TClass? _instance;
 
         //Instance-level synchronization for event handler registration and draining(invocation after "created" flips).
-        private readonly object _createdLock = new object();
+        private readonly Lock _createdLock = new();
 
         private EventHandler? _createdHandlers;
 

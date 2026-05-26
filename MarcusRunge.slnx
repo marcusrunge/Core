@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/Projektmappenelemente/">
-    <File Path=".github/workflows/dotnet-desktop.yml" />
+    <File Path=".github/workflows/main.yml" />
     <File Path=".github/workflows/release.yml" />
     <File Path="Directory.Build.props" />
     <File Path="LICENSE.txt" />

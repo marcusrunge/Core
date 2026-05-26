@@ -1,8 +1,10 @@
 <Solution>
   <Folder Name="/Projektmappenelemente/">
     <File Path=".github/workflows/dotnet-desktop.yml" />
+    <File Path=".github/workflows/release.yml" />
     <File Path="LICENSE.txt" />
     <File Path="README.md" />
+    <File Path="X:/Büro/Arbeitsverhältnisse/Computime/repos/63444 - Computime.Common/Directory.Build.props" />
   </Folder>
   <Project Path="MarcusRunge.Base.EntityFramework.Test/MarcusRunge.Base.EntityFramework.Test.csproj" Id="fb2b55ad-b285-4d07-838e-b5e3f9e6ff4d" />
   <Project Path="MarcusRunge.Base.EntityFramework/MarcusRunge.Base.EntityFramework.csproj" Id="0399b539-f74a-4d41-9be5-cc3eb61a3b7e" />

@@ -7,10 +7,17 @@
     {
         private int _id;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BindableEntityBase"/> class.
+        /// </summary>
         protected BindableEntityBase()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BindableEntityBase"/> class.
+        /// </summary>
+        /// <param name="id">The entity's identity.</param>
         protected BindableEntityBase(int id) : base() => Id = id;
 
         /// <summary>

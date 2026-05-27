@@ -1,13 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace MarcusRunge.Base
+﻿namespace MarcusRunge.Base
 {
     /// <summary>
     /// Provides a contract for components that expose their creation state and a creation notification event.
     /// </summary>
     public interface ICreateableAware
     {
+        /// <summary>
+        /// Gets the event that is raised when the instance is created.
+        /// </summary>
         public event EventHandler OnCreated;
 
         /// <summary>

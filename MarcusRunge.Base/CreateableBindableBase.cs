@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace MarcusRunge.Base
+﻿namespace MarcusRunge.Base
 {
     /// <summary>
     /// Public base type that provides thread-safe creation and one-time async initialization for a singleton-like instance.
@@ -14,14 +10,14 @@ namespace MarcusRunge.Base
         where TClass : CreateableBindableBase<TInterface, TClass, TBase>, TInterface, new()
     {
         // Global synchronization for singleton creation and starting the async initialization exactly once.
-        private static readonly object _sync = new object();
+        private static readonly object _sync = new();
 
         private static Exception? _initializationException;
         private static Task? _initTask;
         private static TClass? _instance;
 
         //Instance-level synchronization for event handler registration and draining(invocation after "created" flips).
-        private readonly object _createdLock = new object();
+        private readonly object _createdLock = new();
 
         private EventHandler? _createdHandlers;
 
@@ -94,7 +90,11 @@ namespace MarcusRunge.Base
         ///<inheritdoc />
         public bool IsCreated => Volatile.Read(ref _isCreated) == 1;
 
-        // Factory method to create/get the singleton instance.
+        /// <summary>
+        /// Factory method to create the singleton instance and start async initialization. The instance is created synchronously on the first call, and async initialization is triggered once and only once. Subsequent calls return the already created instance. The provided base parameter is passed to both the synchronous and asynchronous creation hooks for flexible setup.
+        /// </summary>
+        /// <param name="base"></param>
+        /// <returns></returns>
         public static TInterface Create(TBase @base)
         {
             // Method purpose:
@@ -115,10 +115,18 @@ namespace MarcusRunge.Base
             return _instance!;
         }
 
-        // Implementers define the synchronous creation hook (typically cheap, no async/await).
+        /// <summary>
+        /// Initialization hook for synchronous setup during instance creation. This runs exactly once on the first call to <see cref="Create(TBase)"/> before the instance is published. Implementers can use this to perform any necessary setup that must happen before the instance is visible to other threads (e.g., populating fields that async initialization depends on). Note that this runs on the calling thread of <see cref="Create(TBase)"/>, so it should avoid long-running work to prevent blocking callers.
+        /// </summary>
+        /// <param name="base">The base parameter for initialization.</param>
         protected abstract void OnCreate(TBase @base);
 
-        // Implementers define the asynchronous creation hook (heavy setup, IO, etc.).
+        /// <summary>
+        /// Initialization hook for asynchronous setup during instance creation. This runs exactly once on the first call to <see cref="Create(TBase)"/> after the instance is published. Implementers can use this to perform any necessary setup that must happen asynchronously (e.g., fetching data from a remote source).
+        /// </summary>
+        /// <param name="base">The base parameter for initialization.</param>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         protected abstract Task OnCreateAsync(TBase @base, CancellationToken cancellationToken);
 
         private static void EnsureAsyncInitStarted(TBase @base)

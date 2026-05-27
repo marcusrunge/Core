@@ -1,44 +1,49 @@
 <Project>
-  <PropertyGroup>
-    <!-- Compiler -->
-    <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
+	<PropertyGroup>
+		<!-- Compiler -->
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
 
-    <!-- Meta -->
-    <Authors>Marcus Runge</Authors>
-    <Company>Marcus Runge</Company>
+		<!-- Meta -->
+		<Authors>Marcus Runge</Authors>
+		<Company>Marcus Runge</Company>
 
-    <!-- NuGet -->
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/marcusrunge/MarcusRunge</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+		<!-- NuGet -->
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/marcusrunge/MarcusRunge</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/marcusrunge/MarcusRunge</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/marcusrunge/MarcusRunge</RepositoryUrl>
 
-    <!-- Debugging -->
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<!-- Debugging -->
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 
-    <!-- Build -->
-    <Deterministic>true</Deterministic>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<!-- Build -->
+		<Deterministic>true</Deterministic>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-    <!-- Default: packable -->
-    <IsPackable Condition="'$(IsPackable)' == ''">true</IsPackable>
-  </PropertyGroup>
+		<!-- Default: packable -->
+		<IsPackable Condition="'$(IsPackable)' == ''">true</IsPackable>
+	</PropertyGroup>
 
-  <!-- CI -->
-  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true' or '$(TF_BUILD)' == 'true'">
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
+	<!-- CI -->
+	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true' or '$(TF_BUILD)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
 
-  <!-- Versioning -->
-  <ItemGroup>
-    <PackageReference Include="MinVer" Version="4.3.0" PrivateAssets="all" />
-  </ItemGroup>
+	<!-- Versioning -->
+	<ItemGroup>
+		<PackageReference Include="MinVer" Version="4.3.0" PrivateAssets="all" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)README.md"
+			  Pack="true"
+			  PackagePath="\" />
+	</ItemGroup>
 </Project>

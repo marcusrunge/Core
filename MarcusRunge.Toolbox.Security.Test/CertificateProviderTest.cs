@@ -1,10 +1,11 @@
 ﻿namespace MarcusRunge.Toolbox.Test
 {
+    using global::MarcusRunge.Toolbox.Security;
     using System.Security.Cryptography;
     using System.Security.Cryptography.X509Certificates;
     using Xunit;
 
-    namespace MarcusRunge.Toolbox.Test
+    namespace MarcusRunge.Toolbox.Security.Test
     {
         /// <summary>
         /// Contains unit tests for the <see cref="CertificateProvider"/> class.

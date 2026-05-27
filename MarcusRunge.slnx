@@ -10,6 +10,8 @@
   <Project Path="MarcusRunge.Base.EntityFramework/MarcusRunge.Base.EntityFramework.csproj" Id="0399b539-f74a-4d41-9be5-cc3eb61a3b7e" />
   <Project Path="MarcusRunge.Base.Tests/MarcusRunge.Base.Test.csproj" Id="b6c419d4-9dd8-490d-93c4-f3d0ae8d297b" />
   <Project Path="MarcusRunge.Base/MarcusRunge.Base.csproj" />
-  <Project Path="MarcusRunge.Toolbox.Test/MarcusRunge.Toolbox.Test.csproj" Id="d5273a76-ec7b-4fe9-8d66-79ead4e265ab" />
-  <Project Path="MarcusRunge.Toolbox/MarcusRunge.Toolbox.csproj" Id="cd09d249-3773-43db-983a-211c9af67704" />
+  <Project Path="MarcusRunge.Toolbox.Network.Test/MarcusRunge.Toolbox.Network.Test.csproj" Id="773d8adb-cd18-4378-8920-5a6c244c71c8" />
+  <Project Path="MarcusRunge.Toolbox.Network/MarcusRunge.Toolbox.Network.csproj" Id="a01925e8-0d9a-41b5-a7b0-f94e95cd9d43" />
+  <Project Path="MarcusRunge.Toolbox.Security.Test/MarcusRunge.Toolbox.Security.Test.csproj" Id="d5273a76-ec7b-4fe9-8d66-79ead4e265ab" />
+  <Project Path="MarcusRunge.Toolbox.Security/MarcusRunge.Toolbox.Security.csproj" Id="cd09d249-3773-43db-983a-211c9af67704" />
 </Solution>

@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace MarcusRunge.Toolbox
+namespace MarcusRunge.Toolbox.Security
 {
     /// <summary>
     /// This class provides functionality to create self-signed certificates for development and testing purposes. It allows you to generate a certificate with a specified common name, RSA key size, and validity period. The generated certificate is exported in PKCS#12 format and can be loaded into the Windows certificate store or used directly in applications that require SSL/TLS certificates.

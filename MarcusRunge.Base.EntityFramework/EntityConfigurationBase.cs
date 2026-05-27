@@ -12,6 +12,7 @@ namespace MarcusRunge.Base.EntityFramework
         where TEntity : BindableEntityBase
         where TConfiguration : EntityConfigurationBase<TEntity, TConfiguration>, new()
     {
+        /// <inheritdoc/>
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
             builder.
@@ -24,6 +25,7 @@ namespace MarcusRunge.Base.EntityFramework
                 .IsConcurrencyToken()
                 .ValueGeneratedOnAddOrUpdate();
         }
+
         /// <summary>
         /// Creates a new instance of the entity configuration.
         /// </summary>

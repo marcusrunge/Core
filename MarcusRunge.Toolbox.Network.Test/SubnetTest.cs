@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using MarcusRunge.Toolbox.Network;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
@@ -15,7 +16,7 @@ namespace MarcusRunge.Toolbox.Network.Test
         [Fact]
         public void GetIpv4SubnetMask_WhenIpAddressIsNull_ThrowsArgumentNullException()
         {
-            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => Subnet.GetIpv4SubnetMask(null!));
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => IPv4.Subnet.GetSubnetMask(null!));
 
             Assert.Equal("ipAddress", exception.ParamName);
         }
@@ -26,7 +27,7 @@ namespace MarcusRunge.Toolbox.Network.Test
         [Fact]
         public void GetIpv4SubnetMask_WhenIpAddressIsIpv6_ThrowsArgumentException()
         {
-            ArgumentException exception = Assert.Throws<ArgumentException>(() => Subnet.GetIpv4SubnetMask(IPAddress.IPv6Loopback));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => IPv4.Subnet.GetSubnetMask(IPAddress.IPv6Loopback));
 
             Assert.Equal("ipAddress", exception.ParamName);
             Assert.Contains("IPv4", exception.Message);
@@ -40,7 +41,7 @@ namespace MarcusRunge.Toolbox.Network.Test
         {
             IPAddress ipAddress = IPAddress.Parse("203.0.113.1");
 
-            ArgumentException exception = Assert.Throws<ArgumentException>(() => Subnet.GetIpv4SubnetMask(ipAddress));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => IPv4.Subnet.GetSubnetMask(ipAddress));
 
             Assert.Equal("ipAddress", exception.ParamName);
             Assert.Contains(ipAddress.ToString(), exception.Message);
@@ -55,7 +56,7 @@ namespace MarcusRunge.Toolbox.Network.Test
             UnicastIPAddressInformation? addressInformation = GetFirstUnicastAddress(AddressFamily.InterNetwork);
             Assert.NotNull(addressInformation);
 
-            IPAddress subnetMask = Subnet.GetIpv4SubnetMask(addressInformation.Address);
+            IPAddress subnetMask = IPv4.Subnet.GetSubnetMask(addressInformation.Address);
 
             Assert.Equal(addressInformation.IPv4Mask, subnetMask);
         }
@@ -66,7 +67,7 @@ namespace MarcusRunge.Toolbox.Network.Test
         [Fact]
         public void GetIpv6PrefixLength_WhenIpAddressIsNull_ThrowsArgumentNullException()
         {
-            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => Subnet.GetIpv6PrefixLength(null!));
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => IPv6.Subnet.GetIpv6PrefixLength(null!));
 
             Assert.Equal("ipAddress", exception.ParamName);
         }
@@ -77,7 +78,7 @@ namespace MarcusRunge.Toolbox.Network.Test
         [Fact]
         public void GetIpv6PrefixLength_WhenIpAddressIsIpv4_ThrowsArgumentException()
         {
-            ArgumentException exception = Assert.Throws<ArgumentException>(() => Subnet.GetIpv6PrefixLength(IPAddress.Loopback));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => IPv6.Subnet.GetIpv6PrefixLength(IPAddress.Loopback));
 
             Assert.Equal("ipAddress", exception.ParamName);
             Assert.Contains("IPv6", exception.Message);
@@ -91,7 +92,7 @@ namespace MarcusRunge.Toolbox.Network.Test
         {
             IPAddress ipAddress = IPAddress.Parse("2001:db8::1");
 
-            ArgumentException exception = Assert.Throws<ArgumentException>(() => Subnet.GetIpv6PrefixLength(ipAddress));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => IPv6.Subnet.GetIpv6PrefixLength(ipAddress));
 
             Assert.Equal("ipAddress", exception.ParamName);
             Assert.Contains(ipAddress.ToString(), exception.Message);
@@ -106,7 +107,7 @@ namespace MarcusRunge.Toolbox.Network.Test
             UnicastIPAddressInformation? addressInformation = GetFirstUnicastAddress(AddressFamily.InterNetworkV6);
             Assert.NotNull(addressInformation);
 
-            int prefixLength = Subnet.GetIpv6PrefixLength(addressInformation.Address);
+            int prefixLength = IPv6.Subnet.GetIpv6PrefixLength(addressInformation.Address);
 
             Assert.Equal(addressInformation.PrefixLength, prefixLength);
         }

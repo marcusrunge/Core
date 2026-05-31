@@ -1,12 +1,11 @@
-﻿using MarcusRunge.Toolbox.Network;
-using System.Net;
+﻿using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 namespace MarcusRunge.Toolbox.Network.Test
 {
     /// <summary>
-    /// Unit tests for <see cref="Subnet"/>.
+    /// Unit tests for <see cref="IPv4.Subnet"/> and <see cref="IPv6.Subnet"/>.
     /// </summary>
     public class SubnetTest
     {

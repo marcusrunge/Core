@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace MarcusRunge.Toolbox.Network.IPv4
 {
@@ -8,6 +9,71 @@ namespace MarcusRunge.Toolbox.Network.IPv4
     /// </summary>
     public static class Scanner
     {
+        /// <summary>
+        /// Gets the host addresses of the local machine, filtering for IPv4 addresses only.
+        /// </summary>
+        /// <returns>An array of IPv4 addresses.</returns>
+        public static IPAddress[] GetHostAddresses() => [.. Dns.GetHostAddresses(Dns.GetHostName()).Where(x => x.AddressFamily == AddressFamily.InterNetwork)];
+
+        /// <summary>
+        /// Gets the range of IP addresses for the given IP address and subnet mask. The method calculates the starting and ending IP addresses in the range by performing bitwise operations on the host address and subnet mask. The starting address is obtained by performing a bitwise AND operation between the host address and subnet mask, while the ending address is obtained by performing a bitwise OR operation between the host address and the inverted subnet mask. This allows for scanning or enumerating all IP addresses within the calculated range.
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <param name="subnetMask"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static (byte[] from, byte[] to) GetIPAddressRange(IPAddress ipAddress, IPAddress subnetMask)
+        {
+            // Validate that the ipAddress and subnetMask parameters are not null.
+            ArgumentNullException.ThrowIfNull(ipAddress);
+            ArgumentNullException.ThrowIfNull(subnetMask);
+            // Validate that both the ipAddress and subnetMask are IPv4 addresses.
+            if (ipAddress.AddressFamily != AddressFamily.InterNetwork)
+            {
+                throw new ArgumentException("Only IPv4 addresses are supported.", nameof(ipAddress));
+            }
+            // Validate that the subnetMask is an IPv4 address.
+            if (subnetMask.AddressFamily != AddressFamily.InterNetwork)
+            {
+                throw new ArgumentException("Only IPv4 subnet masks are supported.", nameof(subnetMask));
+            }
+            // Get the byte arrays for the host address and subnet mask.
+            byte[] hostAddress = ipAddress.GetAddressBytes();
+            byte[] subnetAddress = subnetMask.GetAddressBytes();
+            // Initialize byte arrays for the starting and ending addresses of the range.
+            byte[] startAddress = new byte[4];
+            byte[] endAddress = new byte[4];
+            // Calculate the starting and ending addresses by performing bitwise operations on the host address and subnet mask.
+            for (int i = 0; i < 4; i++)
+            {
+                startAddress[i] = (byte)(hostAddress[i] & subnetAddress[i]);
+                endAddress[i] = (byte)(hostAddress[i] | (subnetAddress[i] ^ 0xFF));
+            }
+
+            return (startAddress, endAddress);
+        }
+
+        /// <summary>
+        /// Gets the range of IP addresses for the given IP address based on its subnet mask. The subnet mask is determined using the Subnet.GetSubnetMask method, which calculates the subnet mask based on the class of the IP address. The method returns a tuple containing the starting and ending IP addresses in byte array format. This allows for scanning or enumerating all IP addresses within the calculated range.
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static (byte[] from, byte[] to) GetIPAddressRange(IPAddress ipAddress)
+        {
+            // Validate that the ipAddress parameter is not null and is an IPv4 address.
+            ArgumentNullException.ThrowIfNull(ipAddress);
+
+            if (ipAddress.AddressFamily != AddressFamily.InterNetwork)
+            {
+                throw new ArgumentException("Only IPv4 addresses are supported.", nameof(ipAddress));
+            }
+            // Get the subnet mask for the given IP address using the Subnet.GetSubnetMask method.
+            IPAddress subnetMask = IPv4.Subnet.GetSubnetMask(ipAddress);
+
+            return GetIPAddressRange(ipAddress, subnetMask);
+        }
+
         /// <summary>
         /// Scans the ip range asynchronous.
         /// </summary>
